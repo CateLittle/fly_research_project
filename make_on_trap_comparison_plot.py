@@ -11,6 +11,7 @@ import json
 trap_I='2021_10_30_I'
 trap_J='2021_10_30_J'
 
+
 f_I=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_'+trap_I+'/master_trap_'+trap_I+'.json')
 data_I=json.load(f_I)
 f_J=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_'+trap_J+'/master_trap_'+trap_J+'.json')
