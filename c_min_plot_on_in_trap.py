@@ -76,7 +76,7 @@ ind=0
 fig=plt.figure()
 axm=plt.axes()
 axm = fig.add_subplot(111)
-f#ig.autofmt_xdate() # auto format
+#fig.autofmt_xdate() # auto format
 
 #xformatter = md.DateFormatter('%M:%S')
 #xlocator = md.MinuteLocator(interval = 5)
