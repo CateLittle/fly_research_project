@@ -5,6 +5,7 @@ import time
 import datetime
 import sys
 import json
+from matplotlib.pyplot import figure
 
 #6 traps
 trap_A='2021_10_30_A'
@@ -215,6 +216,9 @@ for i in actual_timestamp_list_G:
 ind=0
 
 fig=plt.figure()
+from pylab import rcParams
+rcParams['figure.figsize'] = 5, 10
+#fig, axs = plt.subplots(6, 1, figsize=(5, 8), constrained_layout=True, sharex=True, sharey=True)
 #ax1=plt.axes()
 ax1 = fig.add_subplot(611)
 
@@ -223,7 +227,7 @@ plt.ylim(-0.5,15)
 
 
 
-ax1.set_title('Flies on upwind and downwind 10m traps')
+#ax1.set_title('Flies on 10m traps')
 
 #set dark back ground
 ax1.patch.set_facecolor('white')
@@ -246,61 +250,82 @@ ax1.spines['bottom'].set_color('black')
 
 
 ax1.plot(sec_since_release_list_A[:1500], on_trap_list_A[:1500], '-',markersize=4,color="b",label="Trap A")
-plt.legend(loc='upper right')
+#plt.legend(loc='upper right')
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
+fig.suptitle('Flies on 10m traps', fontsize=16)
+ax1.set_title('Trap A')
+plt.xlim(-300,1500)
+plt.ylim(-0.5,15)
 ax1.set_xticks([])
 plt.subplots_adjust(left=0.15)
+plt.subplots_adjust(top=0.85)
 
 ax1 = fig.add_subplot(612)
 compare_plot=ax1.plot(sec_since_release_list_B[:1500], on_trap_list_B[:1500], '-',markersize=4,color="c",label="Trap B")
-plt.legend(loc='upper right')
+#plt.legend(loc='upper right')
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
+ax1.set_title('Trap B')
+plt.xlim(-300,1500)
+plt.ylim(-0.5,15)
 ax1.set_xticks([])
 plt.subplots_adjust(left=0.15)
 
 ax1 = fig.add_subplot(613)
 compare_plot=ax1.plot(sec_since_release_list_D[:1500], on_trap_list_D[:1500], '-',markersize=4,color="g",label="Trap D")
-plt.legend(loc='upper right')
+#plt.legend(loc='upper right')
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
+ax1.set_title('Trap D')
+plt.xlim(-300,1500)
+plt.ylim(-0.5,15)
 ax1.set_xticks([])
 ax1.set_ylabel('Flies on trap')
 plt.subplots_adjust(left=0.15)
 
 ax1 = fig.add_subplot(614)
 compare_plot=ax1.plot(sec_since_release_list_E[:1500], on_trap_list_E[:1500], '-',markersize=4,color="m",label="Trap E")
-plt.legend(loc='upper right')
+#plt.legend(loc='upper right')
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
+ax1.set_title('Trap E')
+plt.xlim(-300,1500)
+plt.ylim(-0.5,15)
 ax1.set_xticks([])
 plt.subplots_adjust(left=0.15)
 
 ax1 = fig.add_subplot(615)
 compare_plot=ax1.plot(sec_since_release_list_F[:1500], on_trap_list_F[:1500], '-',markersize=4,color="y",label="Trap F")
-plt.legend(loc='upper right')
+#plt.legend(loc='upper right')
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
+ax1.set_title('Trap F')
+plt.xlim(-300,1500)
+plt.ylim(-0.5,15)
 ax1.set_xticks([])
 plt.subplots_adjust(left=0.15)
 
 ax1 = fig.add_subplot(616)
 compare_plot=ax1.plot(sec_since_release_list_G[:1500], on_trap_list_G[:1500], '-',markersize=4,color="r",label="Trap G")
-plt.legend(loc='upper right')
+#plt.legend(loc='upper right')
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
+ax1.set_title('Trap G')
+plt.xlim(-300,1500)
+plt.ylim(-0.5,15)
 ax1.set_xticks([-300,0,300,600,900,1200,1500])
 ax1.set_xticklabels([-5,0,5,10,15,20,25])
 ax1.set_xlabel('Time since release (min)')
 plt.subplots_adjust(bottom=0.15)
 plt.subplots_adjust(left=0.15)
 
-plt.text(100, 150,'c_plot_10m_traps.py')
+
+plt.text(900, 160,'c_plot_10m_traps.py')
 
 plt.savefig('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/plots_for_2021_10_30_traps/compare_10m_traps.png',dpi=600)
