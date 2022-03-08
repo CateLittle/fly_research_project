@@ -6,6 +6,12 @@ import datetime
 import sys
 import json
 from matplotlib.pyplot import figure
+import matplotlib as mpl
+mpl.rcParams['pdf.fonttype']=42
+mpl.rcParams['ps.fonttype'] = 42
+
+
+
 
 #6 traps
 trap_A='2021_10_30_A'
@@ -15,25 +21,25 @@ trap_E='2021_10_30_E'
 trap_F='2021_10_30_F'
 trap_G='2021_10_30_G'
 
-
+file_prefix='/Users/tim/BoxSync/Warren-Lab/all_traps_final_analysis_json_files/'
 
 #f_A=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_A/master_trap_2021_10_30_A.json')
-f_A=open('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_A/master_trap_2021_10_30_A.json')
+f_A=open(file_prefix +'trap_2021_10_30_A/master_trap_2021_10_30_A.json')
 data_A=json.load(f_A)
 #f_B=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_B/master_trap_2021_10_30_B.json')
-f_B=open('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_B/master_trap_2021_10_30_B.json')
+f_B=open(file_prefix+'trap_2021_10_30_B/master_trap_2021_10_30_B.json')
 data_B=json.load(f_B)
 #f_I=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_D/master_trap_2021_10_30_D.json')
-f_D=open('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_D/master_trap_2021_10_30_D.json')
+f_D=open(file_prefix+'trap_2021_10_30_D/master_trap_2021_10_30_D.json')
 data_D=json.load(f_D)
 #f_F=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_E/master_trap_2021_10_30_E.json')
-f_E=open('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_E/master_trap_2021_10_30_E.json')
+f_E=open(file_prefix+'trap_2021_10_30_E/master_trap_2021_10_30_E.json')
 data_E=json.load(f_E)
 #f_F=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_F/master_trap_2021_10_30_F.json')
-f_F=open('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_F/master_trap_2021_10_30_F.json')
+f_F=open(file_prefix+'trap_2021_10_30_F/master_trap_2021_10_30_F.json')
 data_F=json.load(f_F)
 #f_G=open('/home/flyranch/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_G/master_trap_2021_10_30_G.json')
-f_G=open('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/all_traps_final_analysis_json_files/trap_2021_10_30_G/master_trap_2021_10_30_G.json')
+f_G=open(file_prefix+'trap_2021_10_30_G/master_trap_2021_10_30_G.json')
 data_G=json.load(f_G)
 
 release='142000'
@@ -215,12 +221,41 @@ for i in actual_timestamp_list_G:
 
 ind=0
 
+
+interp_xvls=np.linspace(-2,10,360)
+
+a=np.interp(interp_xvls,np.array(sec_since_release_list_A[:1500])/60,on_trap_list_A[:1500])
+b=np.interp(interp_xvls,np.array(sec_since_release_list_B[:1500])/60,on_trap_list_B[:1500])
+g=np.interp(interp_xvls,np.array(sec_since_release_list_G[:1500])/60,on_trap_list_G[:1500])
+e=np.interp(interp_xvls,np.array(sec_since_release_list_E[:1500])/60,on_trap_list_E[:1500])
+f=np.interp(interp_xvls,np.array(sec_since_release_list_F[:1500])/60,on_trap_list_F[:1500])
+d=np.interp(interp_xvls,np.array(sec_since_release_list_D[:1500])/60,on_trap_list_D[:1500])
+fig=plt.figure()
+ax1=fig.add_subplot(211)
+ax1.plot(d)
+ax1.set_ylim([0,15])
+ax1.set_xlim([-2,10])
+ax1.set_yticks([0,5,10,15])
+ax1.set_xticks([0,60,120,180,240,300,360])
+ax1.set_xticklabels([-2,0,2,4,6,8,10])
+
+ax=fig.add_subplot(212)
+on_trap_array=np.vstack((d,e,f,a,b,g))
+#print(np.shape(on_trap_array))
+plt.imshow(on_trap_array,cmap='hot',interpolation='nearest',aspect='auto')
+plt.colorbar(shrink=0.8,orientation='horizontal')
+ax.set_xticks([0,60,120,180,240,300,360])
+ax.set_xticklabels([-2,0,2,4,6,8,10])
+fig.tight_layout()
+plt.savefig(file_prefix+'image.pdf',dpi=600,transparent=True)
+
+
 fig=plt.figure()
 from pylab import rcParams
 rcParams['figure.figsize'] = 5, 10
 #fig, axs = plt.subplots(6, 1, figsize=(5, 8), constrained_layout=True, sharex=True, sharey=True)
 #ax1=plt.axes()
-ax1 = fig.add_subplot(611)
+ax1 = fig.add_subplot(111)
 
 plt.xlim(-300,1500)
 plt.ylim(-0.5,15)
@@ -249,83 +284,50 @@ ax1.spines['left'].set_color('black')
 ax1.spines['bottom'].set_color('black') 
 
 
-ax1.plot(sec_since_release_list_A[:1500], on_trap_list_A[:1500], '-',markersize=4,color="b",label="Trap A")
-#plt.legend(loc='upper right')
+
+ax1=fig.add_subplot(211)
+ax1.plot(sec_since_release_list_A[:1500], on_trap_list_A[:1500], '-',markersize=0.5,color="b",label="Trap A")
+ax1.plot(sec_since_release_list_B[:1500], on_trap_list_B[:1500], '-',markersize=0.5,color="r",label="Trap B")
+ax1.plot(sec_since_release_list_G[:1500], on_trap_list_G[:1500], '-',markersize=0.5,color="g",label="Trap G")
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
-fig.suptitle('Flies on 10m traps', fontsize=16)
-ax1.set_title('Trap A')
-plt.xlim(-300,1500)
+#fig.suptitle('Flies on 10m traps', fontsize=16)
+#ax1.set_title('Trap A')
+plt.xlim(-300,600)
+ax1.set_xticks([-300,0,300,600])
+ax1.set_xticklabels([-5,0,5,10])
 plt.ylim(-0.5,15)
-ax1.set_xticks([])
+#ax1.set_xticks([])
 plt.subplots_adjust(left=0.15)
 plt.subplots_adjust(top=0.85)
 
-ax1 = fig.add_subplot(612)
-compare_plot=ax1.plot(sec_since_release_list_B[:1500], on_trap_list_B[:1500], '-',markersize=4,color="c",label="Trap B")
+ax1=fig.add_subplot(212)
+
+
+
+ax1.plot(sec_since_release_list_D[:1500], on_trap_list_D[:1500], '-',markersize=0.5,color="c",label="Trap D")
+ax1.plot(sec_since_release_list_E[:1500], on_trap_list_E[:1500], '-',markersize=0.5,color="k",label="Trap E")
+ax1.plot(sec_since_release_list_F[:1500], on_trap_list_F[:1500], '-',markersize=0.5,color="m",label="Trap F")
+
+
 #plt.legend(loc='upper right')
 ax1.spines['bottom'].set_visible(False)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
-ax1.set_title('Trap B')
-plt.xlim(-300,1500)
+#fig.suptitle('Flies on 10m traps', fontsize=16)
+#ax1.set_title('Trap A')
+plt.xlim(-300,600)
+ax1.set_xticks([-300,0,300,600])
+ax1.set_xticklabels([-5,0,5,10])
 plt.ylim(-0.5,15)
-ax1.set_xticks([])
-plt.subplots_adjust(left=0.15)
-
-ax1 = fig.add_subplot(613)
-compare_plot=ax1.plot(sec_since_release_list_D[:1500], on_trap_list_D[:1500], '-',markersize=4,color="g",label="Trap D")
-#plt.legend(loc='upper right')
-ax1.spines['bottom'].set_visible(False)
-ax1.spines['top'].set_visible(False)
-ax1.spines['right'].set_visible(False)
-ax1.set_title('Trap D')
-plt.xlim(-300,1500)
-plt.ylim(-0.5,15)
-ax1.set_xticks([])
-ax1.set_ylabel('Flies on trap')
-plt.subplots_adjust(left=0.15)
-
-ax1 = fig.add_subplot(614)
-compare_plot=ax1.plot(sec_since_release_list_E[:1500], on_trap_list_E[:1500], '-',markersize=4,color="m",label="Trap E")
-#plt.legend(loc='upper right')
-ax1.spines['bottom'].set_visible(False)
-ax1.spines['top'].set_visible(False)
-ax1.spines['right'].set_visible(False)
-ax1.set_title('Trap E')
-plt.xlim(-300,1500)
-plt.ylim(-0.5,15)
-ax1.set_xticks([])
-plt.subplots_adjust(left=0.15)
-
-ax1 = fig.add_subplot(615)
-compare_plot=ax1.plot(sec_since_release_list_F[:1500], on_trap_list_F[:1500], '-',markersize=4,color="y",label="Trap F")
-#plt.legend(loc='upper right')
-ax1.spines['bottom'].set_visible(False)
-ax1.spines['top'].set_visible(False)
-ax1.spines['right'].set_visible(False)
-ax1.set_title('Trap F')
-plt.xlim(-300,1500)
-plt.ylim(-0.5,15)
-ax1.set_xticks([])
-plt.subplots_adjust(left=0.15)
-
-ax1 = fig.add_subplot(616)
-compare_plot=ax1.plot(sec_since_release_list_G[:1500], on_trap_list_G[:1500], '-',markersize=4,color="r",label="Trap G")
-#plt.legend(loc='upper right')
-ax1.spines['top'].set_visible(False)
-ax1.spines['right'].set_visible(False)
-ax1.set_title('Trap G')
-plt.xlim(-300,1500)
-plt.ylim(-0.5,15)
-ax1.set_xticks([-300,0,300,600,900,1200,1500])
-ax1.set_xticklabels([-5,0,5,10,15,20,25])
-ax1.set_xlabel('Time since release (min)')
-plt.subplots_adjust(bottom=0.15)
-plt.subplots_adjust(left=0.15)
+#ax1.set_xticks([])
+#plt.subplots_adjust(left=0.15)
+#plt.subplots_adjust(top=0.85)
 
 
-plt.text(900, 160,'c_plot_10m_traps.py')
 
-plt.savefig('/mnt/c/Users/Owner/Desktop/field_data_and_analysis_scripts/2021lab/plots_for_2021_10_30_traps/compare_10m_traps.png',dpi=600)
+
+#plt.text(900, 160,'c_plot_10m_traps.py')
+
+plt.savefig(file_prefix+'compare_10m_traps.pdf',dpi=600,transparent=True)
